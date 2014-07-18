@@ -1,7 +1,5 @@
 <?php
 /**
- * CHRISTOPHER SILVA
-
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -41,9 +39,14 @@ class XirisT9
      * @var array
      * @access private
      */
-    private $dictionaryT9 = array();
+    private $dictionaryT9;
 
     /**
+     * Using linux american-english dictionary
+     * But other dictionary could be set
+     *
+     * @todo Change the dictionary implementation to treat other types and transform in arrays
+     *
      * @param string $dictionaryPath
      */
     public function setDictionary($dictionaryPath = self::DICT_PATH)
@@ -53,17 +56,39 @@ class XirisT9
     }
 
     /**
+     * @param $word
+     * @return string
+     */
+    public function searchWord($word)
+    {
+        $string = $this->getDictionaryT9($this->getT9Word($word));
+        if (isset($string)) {
+            return '[' . join(', ', $string) . ']';
+        }else{
+            return $word;
+        }
+    }
+
+    /**
      * @param array $dictionary
      * @access private
      */
-    private function setDictionaryT9(array $dictionary)
+    private function setDictionaryT9($dictionary)
     {
         foreach ($dictionary as $item) {
             $item = trim($item);
             $t9   = $this->getT9Word($item);
-
-            $this->dictionaryT9[$t9][] = $item;
+            $this->dictionaryT9[$t9] = $item;
         }
+    }
+
+    /**
+     * @param $t9
+     * @return string
+     */
+    private function getDictionaryT9($t9)
+    {
+        return $this->dictionaryT9[$t9];
     }
 
     /**
@@ -88,6 +113,6 @@ echo "\n\nHello baby, type something and then press [enter] ...\n\n";
 
 $stdin = fopen('php://stdin', 'r');
 while (!feof($stdin)) {
-    echo fgets($stdin);
+    echo $t9->searchWord(fgets($stdin));
 }
 fclose($stdin);
