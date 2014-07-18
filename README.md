@@ -6,3 +6,8 @@ Maintainer: [Christopher Silva](http://xiris.com.br/) ([@xiris_](http://twitter.
 > T9 Algorithm Implementation
 
 You can see more on [Wikipedia](http://en.wikipedia.org/wiki/T9_(predictive_text)/)
+
+## Dictionaries
+
+- The dictionary used is the american-english '/usr/share/dict/american-english'
+
